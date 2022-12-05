@@ -1,0 +1,14 @@
+  # Give the first play a name.
+  # The plays ensures that updates are installed on the system. It also installs
+  # a .MSU package on the systems.
+- name:
+  # Indicate the hosts to target for this play
+  hosts:
+  # Indicate the variables for this play:
+  vars:
+  tasks:
+
+  # Give the second play a name
+  # The plays invokes Chocolatey to install a set of packages to install
+  # packages on the server.
+- name:
