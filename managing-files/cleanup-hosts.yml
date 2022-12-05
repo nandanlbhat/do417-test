@@ -1,0 +1,18 @@
+---
+- name: Templating Files with Jinja2 exercise is cleaned up
+  hosts: all
+  tasks:
+    - name: Index file is absent
+      win_file:
+        path: C:\Inetpub\wwwroot\index.html
+        state: absent
+
+    - name: IIS Web Server is absent
+      win_feature:
+        name: Web-Server
+        state: absent
+
+    - name: Hosts file is cleared
+      win_copy:
+        content: "# Custom host name to IP mappings removed"
+        dest: C:\Windows\System32\drivers\etc\hosts

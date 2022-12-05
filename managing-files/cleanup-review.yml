@@ -1,0 +1,13 @@
+---
+- name: Review is cleaned up
+  hosts: all
+  tasks:
+    - name: Index file is absent
+      win_file:
+        path: C:\Inetpub\wwwroot\index.html
+        state: absent
+
+    - name: IIS Web Server is absent
+      win_feature:
+        name: Web-Server
+        state: absent

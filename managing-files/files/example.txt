@@ -1,0 +1,1 @@
+Ansible will modify the permissions of this text file.

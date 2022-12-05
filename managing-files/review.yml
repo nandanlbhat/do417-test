@@ -1,0 +1,12 @@
+---
+- name: Deploying Files to Managed Hosts Lab
+  hosts: all
+  tasks:
+    # Define a task to start the IIS Web Server
+    - name: IIS Web Server started
+
+    # Define a task that deploys the index.html template
+    - name: Hosts file template deployed
+
+    # Define a task that denies Write access to index.html for Users
+    - name: User write permission is denied

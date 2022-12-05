@@ -1,0 +1,6 @@
+---
+- name: Example archive deployed and permissions set
+  hosts: win1.example.com
+  tasks:
+    # Add tasks here
+

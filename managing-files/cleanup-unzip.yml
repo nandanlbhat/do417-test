@@ -1,0 +1,18 @@
+---
+- name: Unzip exercise is cleaned up
+  hosts: win1.example.com
+  tasks:
+    - name: Temp directory removed
+      win_file:
+        path: C:\Temp\DO417
+        state: absent
+
+    - name: Desktop example shortcut removed
+      win_file:
+        path: C:\Users\devops\Desktop\example-txt.lnk
+        state: absent
+
+    - name: Desktop example directory removed
+      win_file:
+        path: C:\Users\devops\Desktop\example
+        state: absent
