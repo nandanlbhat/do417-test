@@ -2,6 +2,7 @@
 - name: say hi
   hosts: localhost
   tasks:
-    debug:
-      msg: hi
+    - name: say hi in output
+      debug:
+        msg: hi
 ...
