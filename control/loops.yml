@@ -1,0 +1,36 @@
+---
+- name: IIS and debugging tools installed
+  hosts: win1.example.com
+  tasks:
+    - name: IIS is installed
+      win_feature:
+        name: Web-Server
+        state: present
+
+    - name: Custom logging is installed
+      win_feature:
+        name: Web-Custom-Logging
+        state: present
+
+    - name: Log libraries are installed
+      win_feature:
+        name: Web-Log-Libraries
+        state: present
+
+    - name: Request Monitor is installed
+      win_feature:
+        name: Web-Request-Monitor
+        state: present
+
+    - name: HTTP Tracing is installed
+      win_feature:
+        name: Web-Http-Tracing
+        state: present
+
+    - name: Management Tools are installed
+      win_feature:
+        name: Web-Mgmt-Tools
+        state: present
+
+    - name: Server is rebooted
+      win_reboot:

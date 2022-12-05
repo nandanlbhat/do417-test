@@ -1,0 +1,22 @@
+---
+- name: IIS and debugging tools installed
+  hosts: win1.example.com
+  tasks:
+    - name: IIS is installed
+      win_feature:
+        name: Web-Server
+        state: absent
+
+    - name: Debug tools are installed
+      win_feature:
+        name: "{{ item }}"
+        state: absent
+      loop:
+        - Web-Custom-Logging
+        - Web-Log-Libraries
+        - Web-Request-Monitor
+        - Web-Http-Tracing
+        - Web-Mgmt-Tools
+
+    - name: Server is rebooted
+      win_reboot:
