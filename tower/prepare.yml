@@ -1,0 +1,151 @@
+---
+- name: Prepare for Running Complex Workflows Exercise
+  hosts: localhost
+  vars:
+    towerpass: RedHat123@!
+  tasks:
+    - name: Retrieve default organization ID
+      uri:
+        url:  "https://localhost/api/v2/organizations/?name=Default"
+        method: GET
+        user: admin
+        password: "{{ towerpass }}"
+        body: ""
+        body_format: json
+        validate_certs: False
+        force_basic_auth: yes
+        status_code:
+          - 200
+      register: organization_id
+
+    - name: Retrieve default inventory ID
+      uri:
+        url: "https://localhost/api/v2/inventories/?name=Dynamic+inventory"
+        method: GET
+        user: admin
+        password: "{{ towerpass }}"
+        body: ""
+        body_format: json
+        validate_certs: False
+        force_basic_auth: yes
+        status_code:
+          - 200
+      register: inventory_id
+
+    - name: Retrieve projects ID
+      uri:
+        url:  "https://localhost/api/v2/projects/?name=tower+repository"
+        method: GET
+        user: admin
+        password: "{{ towerpass }}"
+        body: ""
+        body_format: json
+        validate_certs: False
+        force_basic_auth: yes
+        status_code:
+          - 200
+      register: projects_id
+
+    - name: Retrieve GitLab credentials ID
+      uri:
+        url:  "https://localhost/api/v2/credentials/?name=GitLab"
+        method: GET
+        user: admin
+        password: "{{ towerpass }}"
+        body: ""
+        body_format: json
+        validate_certs: False
+        force_basic_auth: yes
+        status_code:
+          - 200
+      register: gitlab_credentials_id
+
+    - name: Retrieve AD credentials ID
+      uri:
+        url:  "https://localhost/api/v2/credentials/?name=AD+Administrator"
+        method: GET
+        user: admin
+        password: "{{ towerpass }}"
+        body: ""
+        body_format: json
+        validate_certs: False
+        force_basic_auth: yes
+        status_code:
+          - 200
+      register: ad_credentials_id
+
+    - name: Create broken Git project
+      uri:
+        url:  "https://localhost/api/v2/projects/"
+        method: POST
+        user: admin
+        password: "{{ towerpass }}"
+        body:
+          name: "broken repository"
+          description: "Broken project"
+          local_path: ""
+          scm_type: "git"
+          scm_url: "https://gitlab.example.com/student/broken.git"
+          scm_branch: "master"
+          scm_clean: false
+          scm_delete_on_update: false
+          credential: "{{ gitlab_credentials_id.json.results[0].id }}"
+          timeout: 0
+          organization: "{{ organization_id.json.results[0].id }}"
+          scm_update_on_launch: true
+          scm_update_cache_timeout: 0
+        body_format: json
+        validate_certs: False
+        force_basic_auth: yes
+        status_code:
+          - 200
+          - 201
+          - 400
+      register: response
+      changed_when: response.status == 201
+
+    - name: Create Clean win2 job template
+      uri:
+        url:  "https://localhost/api/v2/job_templates/"
+        method: POST
+        user: admin
+        password: "{{ towerpass }}"
+        body:
+          name: "Clean win2"
+          description: Cleans win2
+          job_type: run
+          inventory: "{{ inventory_id.json.results[0].id }}"
+          project:  "{{ projects_id.json.results[0].id }}"
+          playbook: clean.yml
+          limit: win2.example.com
+          forks: 0
+          verbosity: 0
+          force_handlers: false
+          timeout: 0
+          use_fact_cache: false
+          ask_diff_mode_on_launch: false
+          ask_variables_on_launch: false
+          ask_limit_on_launch: false
+          ask_tags_on_launch: false
+          ask_skip_tags_on_launch: false
+          ask_job_type_on_launch: false
+          ask_verbosity_on_launch: false
+          ask_inventory_on_launch: false
+          ask_credential_on_launch: false
+          survey_enabled: false
+          become_enabled: false
+          diff_mode: false
+          allow_simultaneous: false
+          custom_virtualenv:
+          job_slice_count: 1
+          credential: "{{ ad_credentials_id.json.results[0].id }}"
+          vault_credential:
+        body_format: json
+        validate_certs: False
+        force_basic_auth: yes
+        status_code:
+          - 200
+          - 201
+          - 400
+      register: response
+      changed_when: response.status == 201

@@ -1,0 +1,117 @@
+---
+- name: Creating AD users
+  hosts: windc.example.com
+  vars:
+    domainname: EXAMPLE.COM
+    user_password: RedHat123@!
+
+  tasks:
+
+    - name: Creating user oliver in the "{{ domainname }}" domain
+      win_domain_user:
+        name: oliver
+        firstname:  Oliver
+        lastname: Stone
+        password: "{{ user_password }}"
+        state: present
+        groups:
+          - Domain Users
+        attributes:
+          mail: oliver@example.com
+
+    - name: Creating user daniel in the "{{ domainname }}" domain
+      win_domain_user:
+        name: daniel
+        firstname: Daniel
+        lastname: George
+        password: "{{ user_password }}"
+        state: present
+        groups:
+          - Domain Users
+        attributes:
+          mail: daniel@example.com
+
+    - name: Creating user donnie in the "{{ domainname }}" domain
+      win_domain_user:
+        name: donnie
+        firstname: Donnie
+        lastname: Jameson
+        password: "{{ user_password }}"
+        state: present
+        groups:
+          - Domain Users
+        attributes:
+          mail: donnie@example.com
+
+    - name: Creating user david in the "{{ domainname }}" domain
+      win_domain_user:
+        name: david
+        firstname: David
+        lastname: Jackobs
+        password: "{{ user_password }}"
+        state: present
+        groups:
+          - Domain Users
+        attributes:
+          mail: david@example.com
+
+    - name: Creating admin user in the "{{ domainname }}" domain
+      win_domain_user:
+        name: robert
+        firstname: Robert
+        lastname: Farmer
+        password: "{{ user_password }}"
+        state: present
+        groups:
+          - Administrators
+          - Domain Users
+          - Domain Admins
+        attributes:
+          mail: robert@example.com
+
+    - name: Modifying the existing administrator user
+      win_domain_user:
+        name: Administrator
+        state: present
+        attributes:
+          mail: administrator@example.com
+
+- name: IIS is removed
+  hosts: win1.example.com
+  vars:
+    iis_site_port: 8080
+    iis_site_name: "DO417-variables"
+  gather_facts: no
+
+  tasks:
+    - name: Website index.html is removed
+      win_file:
+        path: C:\sites\variables
+        state: absent
+    - name: IIS service is stopped
+      win_service:
+        name: W3Svc
+        state: stopped
+      ignore_errors: true
+    - name: IIS service is removed
+      win_feature:
+        name: Web-Server
+        state: absent
+    - name: Logs directory is removed
+      win_file:
+        path: C:\sites\logs
+        state: absent
+    - name: Firewall rule is disabled
+      win_firewall_rule:
+        name: HTTP
+        localport: "{{ iis_site_port }}"
+        action: allow
+        direction: in
+        protocol: tcp
+        state: absent
+        enabled: yes
+    - name: IIS site is removed
+      win_iis_website:
+        name: "{{ iis_site_name }}"
+        state: absent
+      ignore_errors: true

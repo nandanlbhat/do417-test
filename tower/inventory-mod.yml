@@ -1,0 +1,154 @@
+---
+- name: Inventory modifications
+  hosts: tower.example.com
+  connection: local
+  vars:
+    towerpass: RedHat123@!
+    dns_domain_name: example.com
+  tasks:
+    - name: Retrieve inventory ID
+      uri:
+        url:  "https://localhost/api/v2/inventories/?name=Default+inventory"
+        method: GET
+        user: admin
+        password: "{{ towerpass }}"
+        body: ""
+        body_format: json
+        validate_certs: False
+        force_basic_auth: yes
+        status_code:
+          - 200
+      register: inventory_id
+
+    - name: Retrieve group ID
+      uri:
+        url:  "https://localhost/api/v2/groups/?name=Windows"
+        method: GET
+        user: admin
+        password: "{{ towerpass }}"
+        body: ""
+        body_format: json
+        validate_certs: False
+        force_basic_auth: yes
+        status_code:
+          - 200
+      register: group_id
+
+
+    - name: Create group
+      uri:
+        url:  "https://tower.example.com/api/v2/groups/{{ group_id.json.results[0].id }}/children/"
+        method: POST
+        user: admin
+        password: "{{ towerpass }}"
+        body:
+          name: "www"
+          description: "Web servers"
+          inventory: "{{ inventory_id.json.results[0].id }}"
+          variables: ""
+        body_format: json
+        validate_certs: False
+        force_basic_auth: yes
+        status_code:
+          - 200
+          - 201
+          - 400
+      register: response
+      changed_when: response.status == 201
+
+
+    - name: Retrieve the new group ID
+      uri:
+        url:  "https://localhost/api/v2/groups/{{ group_id.json.results[0].id }}/children/?name=www"
+        method: GET
+        user: admin
+        password: "{{ towerpass }}"
+        body: ""
+        body_format: json
+        validate_certs: False
+        force_basic_auth: yes
+        status_code:
+          - 200
+      register: group_www_id
+
+    - name: Create host
+      uri:
+        url:  https://localhost/api/v2/hosts/
+        method: POST
+        user: admin
+        password: "{{ towerpass }}"
+        body: "{{ lookup('template','win2_host.json.j2') }}"
+        body_format: json
+        validate_certs: False
+        force_basic_auth: yes
+        status_code:
+          - 200
+          - 201
+          - 400
+      register: response
+      changed_when: response.status == 201
+
+    - name: Retrieve host win2 ID
+      uri:
+        url:  "https://localhost/api/v2/hosts/?name=win2.{{ dns_domain_name }}"
+        method: GET
+        user: admin
+        password: "{{ towerpass }}"
+        body: ""
+        body_format: json
+        validate_certs: False
+        force_basic_auth: yes
+        status_code:
+          - 200
+      register: host_id
+
+
+    - name: Associate win2 host to the www group
+      uri:
+        url:  "https://localhost/api/v2/groups/{{ group_www_id.json.results[0].id }}/hosts/"
+        method: POST
+        user: admin
+        password: "{{ towerpass }}"
+        body:
+          '{ "id": {{ host_id.json.results[0].id | int }} }'
+        body_format: json
+        validate_certs: False
+        force_basic_auth: yes
+        status_code:
+          - 200
+          - 204
+          - 400
+      register: response
+      changed_when: response.status == 204
+
+    - name: Retrieve win1 host ID
+      uri:
+        url:  "https://localhost/api/v2/hosts/?name=win1.{{ dns_domain_name }}"
+        method: GET
+        user: admin
+        password: "{{ towerpass }}"
+        body: ""
+        body_format: json
+        validate_certs: False
+        force_basic_auth: yes
+        status_code:
+          - 200
+      register: host_id
+
+    - name: Associate win1 host to the www group
+      uri:
+        url:  "https://localhost/api/v2/groups/{{ group_www_id.json.results[0].id }}/hosts/"
+        method: POST
+        user: admin
+        password: "{{ towerpass }}"
+        body:
+          '{ "id": {{ host_id.json.results[0].id | int }} }'
+        body_format: json
+        validate_certs: False
+        force_basic_auth: yes
+        status_code:
+          - 200
+          - 204
+          - 400
+      register: response
+      changed_when: response.status == 204

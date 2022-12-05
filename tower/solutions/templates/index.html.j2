@@ -1,0 +1,47 @@
+<h1 style="color: #5e9ca0;">This page was created using variables from a Jinja template</h1>
+<h2 style="color: #2e6c80;">This page has been provisioned by {{ student_name }} using Ansible on the {{ ansible_facts['hostname'] }} host</h2>
+<h2 style="color: #2e6c80;">This page version is {{ version }}</h2>
+<p>
+  To make changes to this page, edit the <strong>templates/index.html.j2</strong> file and rerun the job in Ansible Tower.
+</p>
+<p>
+  List of the modules used to create this site:
+</p>
+
+<p>&nbsp;</p>
+
+<table style="width: 631px;">
+  <tbody>
+    <tr>
+      <td style="width: 200px;">
+        <blockquote><strong>win_feature</strong></blockquote>
+      </td>
+      <td style="width: 400px;">Used to install IIS features</td>
+    </tr>
+    <tr>
+      <td style="width: 200px;">
+        <blockquote><strong>win_file</strong></blockquote>
+      </td>
+      <td style="width: 400px;">Used to create the directory structure</td>
+    </tr>
+    <tr>
+      <td style="width: 200px;">
+        <blockquote><strong>win_template</strong></blockquote>
+      </td>
+      <td style="width: 400px;">Used to install that file</td>
+    </tr>
+    <tr>
+      <td style="width: 200px;">
+        <blockquote><strong>win_iis_website</strong></blockquote>
+      </td>
+      <td style="width: 400px;">Used to configure the IIS website</td>
+    </tr>
+    </tr>
+    <tr>
+      <td style="width: 200px;">
+        <blockquote><strong>win_firewall_rule</strong></blockquote>
+      </td>
+      <td style="width: 400px;">Used to open the firewall</td>
+    </tr>
+  </tbody>
+</table>
