@@ -1,0 +1,40 @@
+---
+- name: Revert changes by lab
+  hosts: win1.example.com
+  vars:
+    db_drive_letter: S
+    powershell_gallery_endpoint: https://www.powershellgallery.com/api/v2/
+    powershell_modules:
+      - SqlServer
+
+  tasks:
+    - name: Disk facts are populated
+      win_disk_facts:
+
+    - name: PowerShell modules for database support are removed
+      win_psmodule:
+        name: "{{ item }}"
+        state: absent
+      loop: "{{ powershell_modules }}"
+
+    - name: Current PowerShell repositories are unregistered
+      win_shell: Unregister-PSRepository "{{ item }}"
+      ignore_errors: true
+      loop:
+        - PowerShell Gallery
+        - PSGallery
+
+    - name: Defrag scheduled task is removed
+      win_scheduled_task:
+        name: DefragDBDrive
+        description: Degfragment the database drive
+        username: SYSTEM
+        run_level: highest
+        state: absent
+
+    - name: Partition is removed from second disk
+      win_partition:
+        disk_number: 1
+        drive_letter: F
+        state: absent
+

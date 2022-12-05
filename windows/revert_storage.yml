@@ -1,0 +1,20 @@
+---
+- name: Revert changes by storage.yml playbook
+  hosts: win1.example.com
+
+  tasks:
+    - name: Disk facts are populated
+      win_disk_facts:
+
+    - name: Forms share is removed
+      win_share:
+        name: forms
+        path: F:\shares\forms
+        state: absent
+
+    - name: Partition is removed from second disk
+      win_partition:
+        disk_number: 1
+        drive_letter: F
+        state: absent
+

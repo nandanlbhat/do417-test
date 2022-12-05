@@ -1,0 +1,79 @@
+---
+- name: Configure database host
+  hosts: win1.example.com
+  vars:
+    db_drive_letter: S
+    powershell_gallery_endpoint: https://www.powershellgallery.com/api/v2/
+    powershell_modules:
+      - SqlServer
+
+  tasks:
+    - name: Disk facts are populated
+      win_disk_facts:
+
+    - name: Second disk extracted as standalone fact
+      set_fact:
+        second_disk: "{{ ansible_facts['disks'] | json_query('[?number==`1`]') }}"
+
+    - name: Initialize second disk if required
+      win_shell: "Initialize-Disk -Number 1"
+      when: second_disk[0]['guid'] is none
+
+    - name: Partition is created on second disk
+      win_partition:
+        disk_number: CHANGE_ME
+        drive_letter: "{{ CHANGE_ME }}"
+        partition_size: CHANGE_ME
+      register: partition_task
+
+    - name: New partition is formatted
+      win_format:
+        drive_letter: "{{ CHANGE_ME }}"
+        file_system: CHANGE_ME
+        new_label: db
+        full: true
+      when: partition_task['changed']
+
+    - name: Defrag scheduled task is created
+      win_scheduled_task:
+        name: CHANGE_ME
+        description: Degfragment the database drive
+        actions:
+        - path: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
+          arguments: >
+            -ExecutionPolicy Unrestricted
+            -NonInteractive
+            -Command {Optimize-Volume -DriveLetter {{ CHANGE_ME }} -Defrag -Verbose}
+        triggers:
+        - type: CHANGE_ME
+          days_of_week: sunday
+          start_boundary: '2019-09-29T03:05:00'
+        username: SYSTEM
+        run_level: highest
+        state: present
+
+    - name: Current PowerShell repositories are unregistered
+      win_shell: Unregister-PSRepository "{{ item }}"
+      ignore_errors: true
+      loop:
+        - PowerShell Gallery
+        - PSGallery
+
+    - name: PowerShell Gallery repository is added
+      win_psrepository:
+        source: "{{ CHANGE_ME }}"
+        name: PowerShell Gallery
+        state: present
+
+    - name: PowerShell Gallery repository is queried
+      win_shell: Get-PSRepository "PowerShell Gallery"
+      register: CHANGE_ME
+      failed_when: repo_status.rc != 0
+      changed_when: false
+
+    - name: PowerShell modules for database support are installed
+      win_psmodule:
+        name: "{{ item }}"
+        state: present
+      loop: "{{ CHANGE_ME }}"
+

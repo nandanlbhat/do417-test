@@ -1,0 +1,85 @@
+- name: Install and Configure an IIS site with SSL certificate
+  hosts: win1.example.com
+
+  tasks:
+    - name: IIS and .Net 4.5 are installed
+      win_feature:
+        name:
+          - Web-Server
+          - Web-Asp-Net45
+        include_management_tools: True
+        state: present
+
+    - name: Logs directory is created
+      win_file:
+        path: C:\sites\logs
+        state: directory
+
+    - name: Site directory is created
+      win_file:
+        path: C:\sites\windows
+        state: directory
+
+    - name: Index page for site is installed
+      win_copy:
+        src: 'files/index.html'
+        dest: C:\sites\windows\index.html
+
+    - name: Previous IIS site is removed
+      win_iis_website:
+        name: DO417-variables
+        state: absent
+
+    - name: IIS site is created
+      win_iis_website:
+        name: DO417-windows
+        state: started
+        port: 8080
+        ip: "*"
+        hostname: "{{ inventory_hostname }}"
+        application_pool: DefaultAppPool
+        physical_path: C:\sites\windows
+        parameters: logfile.directory:C:\sites\logs
+
+    - name: Firewall rule is enabled
+      win_firewall_rule:
+        name: HTTP
+        localport: "{{ item }}"
+        action: allow
+        direction: in
+        protocol: tcp
+        state: present
+        enabled: yes
+      loop:
+        - 8080
+        - 8888
+## DO NOT EDIT ABOVE THIS LINE ##
+
+      # Create the task that retrieves the IIS binding
+    - name: IIS binding is retrieved
+      win_shell:
+
+      # Create the task that retrieves the SSL certificate
+    - name: SSL is queried
+      win_shell:
+
+      # Create the task that generates an SSL certificate is not existing
+    - name: SSL certificate is generated
+      win_shell: >
+
+    - name: IIS site is configured
+      # Create a block to configure the IIS SSL binding
+      ...:
+          # Create a task to retrieve the certificate thumbprint
+        - name:
+          win_shell: >
+
+          # Create a task to add an SSL binding
+        - name:
+          win_iis_webbinding:
+
+          # Create a task to restart the IIS site
+        - name:
+
+      # Do not forget the 'when' statement!
+      when: ""

@@ -1,0 +1,54 @@
+---
+- name: Configure local storage
+  hosts: win1.example.com
+
+  tasks:
+    - name: Disk facts are populated
+      win_disk_facts:
+
+    - name: Second disk extracted as standalone fact
+      set_fact:
+        second_disk: "{{ ansible_facts['disks'] | json_query('[?number==`1`]') }}"
+
+    - name: Second disk size printed
+      CHANGE_ME:
+        CHANGE_ME: CHANGE_ME
+
+    - name: Initialize second disk if required
+      win_shell: "Initialize-Disk -Number 1"
+      when: second_disk[0]['guid'] is none
+
+    - name: Partition is created on second disk
+      win_partition:
+        disk_number: CHANGE_ME
+        drive_letter: CHANGE_ME
+        partition_size: CHANGE_ME
+      register: partition_task
+
+    - name: New partition is formatted
+      win_format:
+        drive_letter: CHANGE_ME
+        file_system: CHANGE_ME
+        new_label: CHANGE_ME
+        full: true
+      when: CHANGE_ME
+
+    - name: Share folder is created
+      win_file:
+        CHANGE_ME: CHANGE_ME
+        CHANGE_ME: CHANGE_ME
+
+    - name: Content added to forms folder
+      CHANGE_ME:
+        content: 'All leave requests are now handled by our Intranet site: https://intranet.example.com/forms'
+        CHANGE_ME: CHANGE_ME
+
+    - name: Forms folder is shared
+      win_share:
+        name: forms
+        description: Company forms share
+        path: CHANGE_ME
+        list: CHANGE_ME
+        full: CHANGE_ME
+        read: CHANGE_ME
+

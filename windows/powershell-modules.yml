@@ -1,0 +1,26 @@
+- name: Install PowerShell modules
+  hosts: all
+  vars:
+    # Create a var that points the default PowerShell Gallery API endpoint
+
+    # Create a list that defines the list of Powershell modules to install
+
+  tasks:
+    - name: Current repositories are unregistered
+      win_shell: Unregister-PSRepository "{{ item }}"
+      ignore_errors: true
+      loop:
+        - PowerShell Gallery
+        - PSGallery
+
+      # Create the task for addding the PowerShell repository
+    - name: Repository is added
+      win_psrepository:
+
+      # Create a task to query the repository
+    - name: Repository is queried
+      win_shell:
+
+      # Create the task for installing the PowerShell modules
+    - name: Modules are installed
+

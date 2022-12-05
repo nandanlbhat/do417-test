@@ -1,0 +1,31 @@
+- name: Create a scheduled task
+  hosts: win1.example.com
+  vars:
+    # Create a variable for the script name
+    ps_script: 'pingHosts.ps1'
+
+  tasks:
+      # Create a task to create the 'scripts' directory
+    - name: Script directory is created
+
+      # Create a task to send the PowerShell script
+    - name: PowerShell script is transferred
+
+      # Create the scheduled task.
+    - name: A scheduled task is created
+      win_scheduled_task:
+        name: CHANGE_ME
+        description: CHANGE_ME
+        author: student@example.com
+        enabled: true
+        actions:
+        - path: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
+          arguments: >
+            CHANGE_ME
+        triggers:
+        - CHANGE_ME
+        priority: CHANGE_ME
+        state: present
+
+      # Create a task to retrieve some information about the scheduled task.
+    - name: Status of the task is retrieved
