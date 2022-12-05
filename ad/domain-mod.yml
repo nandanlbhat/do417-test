@@ -1,0 +1,94 @@
+---
+- name: Creating AD groups and users
+  hosts: CHANGE_ME
+  vars:
+    domainname: EXAMPLE.COM
+    dnsname: example.com
+    domain_admin: Administrator@example.com
+    user_password: CHANGE_ME
+
+  tasks:
+    - name: CHANGE_ME {{ domainname }}
+      ANSIBLE_MODULE:
+        name: CHANGE_ME
+        scope: CHANGE_ME
+        category: CHANGE_ME
+        attributes:
+          mail: CHANGE_ME
+          wWWHomePage: CHANGE_ME
+        ignore_protection: yes
+
+    - name: CHANGE_ME
+      ANSIBLE_MODULE:
+        name: CHANGE_ME
+        firstname: CHANGE_ME
+        lastname: CHANGE_ME
+        password: CHANGE_ME
+        state: CHANGE_ME
+        groups:
+          - Domain Users
+          - CHANGE_ME
+        street: 125 42nd St.
+        city: Sometown
+        state_province: CA
+        postal_code: 1234
+        country: US
+        attributes:
+          telephoneNumber: 543-123456
+
+    - name: Creating user daniel in the "{{ domainname }}" domain
+      win_domain_user:
+        name: daniel
+        firstname: Daniel
+        lastname: George
+        password: "{{ user_password }}"
+        state: present
+        groups:
+          - Domain Users
+        attributes:
+          mail: daniel@example.com
+
+    - name: Creating user donnie in the "{{ domainname }}" domain
+      win_domain_user:
+        name: donnie
+        firstname: Donnie
+        lastname: Jameson
+        password: "{{ user_password }}"
+        state: present
+        groups:
+          - Domain Users
+        attributes:
+          mail: donnie@example.com
+
+    - name: Creating user david in the "{{ domainname }}" domain
+      win_domain_user:
+        name: david
+        firstname: David
+        lastname: Jackobs
+        password: "{{ user_password }}"
+        state: present
+        groups:
+          - Domain Users
+        attributes:
+          mail: david@example.com
+
+    - name: Creating test admin user in the "{{ domainname }}" domain
+      win_domain_user:
+        name: robert
+        firstname: Robert
+        lastname: Farmer
+        password: "{{ user_password }}"
+        state: present
+        groups:
+          - Administrators
+          - Domain Users
+          - Domain Admins
+        attributes:
+          mail: robert@example.com
+
+    - name: Modifying the existing administrator user
+      win_domain_user:
+        name: Administrator
+        state: present
+        attributes:
+          mail: administrator@example.com

@@ -1,0 +1,25 @@
+---
+- name: Create a local user
+  # Update the playbook to target all hosts
+  hosts: CHANGE_ME
+
+  tasks:
+      # Create two users
+    - name: CHANGE_ME
+      CORRECT_MODULE:
+        CHANGE_ME: "{{ item }}"
+        CHANGE_ME: RedHat123@!
+        CHANGE_ME: present
+        CHANGE_ME:
+          - Users
+      loop:
+        - Review User1
+        - Review User2
+
+      # Add the Review User1 to the Print operators group
+    - name: CHANGE_ME
+      CORRECT_MODULE:
+        CHANGE_ME: Print operators
+        CHANGE_ME:
+          - Review User1
+        CHANGE_ME: present

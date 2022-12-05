@@ -1,0 +1,25 @@
+---
+- name: Populate AD with additional hosts
+  hosts: all
+  vars:
+    domainname: EXAMPLE.COM
+    dnsname: example.com
+
+  tasks:
+    - name: A new Linux host is added to the "{{ domainname }}" AD domain
+      ANSIBLE_MODULE:
+        name: CHANGE_ME
+        dns_hostname: CHANGE_ME
+        ou: "CN=CHANGE,DC=ME"
+        description: Linux server example
+        enabled: yes
+        state: present
+
+    - name: A new Windows host is added to the "{{ domainname }}" AD domain
+      ANSIBLE_MODULE:
+        name: CHANGE_ME
+        sam_account_name: CHANGE_ME$
+        dns_hostname: CHANGE_ME
+        ou: "CN=CHANGE,DC=ME"
+        description: Windows server example
+        state: present

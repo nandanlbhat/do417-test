@@ -1,0 +1,18 @@
+---
+- name: Create a local user
+  hosts: CHANGE_ME
+
+  tasks:
+    - name: CHANGE_ME
+      CORRECT_MODULE:
+        name: CHANGE_ME
+        password: CHANGE_ME
+        state: present
+        groups:
+          - Users
+    - name: CHANGE_ME
+      CORRECT_MODULE:
+        name: CHANGE_ME
+        members:
+          - CHANGE_ME
+        state: present

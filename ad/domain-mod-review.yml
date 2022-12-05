@@ -1,0 +1,25 @@
+---
+- name: Creating AD groups and users
+  hosts: all
+  vars:
+    domainname: EXAMPLE.COM
+    user_password: RedHat123@!
+
+  tasks:
+      # Update the task to create a new group in the domain
+    - name: New group in the "{{ domainname }}" is created
+      CHANGE_ME:
+        CHANGE_ME: Review Group
+        CHANGE_ME: global
+
+      # Update the task to create a new user in the group
+    - name: New user in the "{{ domainname }}" is created
+      CHANGE_ME:
+        CHANGE_ME: oliver
+        CHANGE_ME: Oliver
+        CHANGE_ME: Stone
+        CHANGE_ME: "{{ user_password }}"
+        state: present
+        CHANGE_ME:
+          - Domain Users
+          - Review Group

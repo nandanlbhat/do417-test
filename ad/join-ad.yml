@@ -1,0 +1,21 @@
+---
+- name: Join an existing AD domain
+  hosts: CHANGE_ME
+  vars:
+    domainname: CHANGE_ME
+    dnsname: CHANGE_ME
+    domain_admin: Administrator@example.com
+
+  tasks:
+    - name: CHANGE_ME
+      ANSIBLE_MODULE:
+        dns_domain_name: CHANGE_ME
+        domain_admin_user: CHANGE_ME
+        domain_admin_password: CHANGE_ME
+        state: domain
+      register: domain_state
+
+    - name: Rebooting to join the domain
+      win_reboot:
+        msg: "Rebooting..."
+      when: domain_state.reboot_required
