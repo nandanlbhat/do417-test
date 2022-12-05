@@ -5,4 +5,21 @@
     - name: say hello in output
       debug:
         msg: hello
+
+- name: another play
+  hosts: win1.example.com
+  tasks:
+    - name: ensure host is on-line
+      win_ping:
+
+    - name: ensure web server feature is enabled
+      win_feature:
+        name: Web-Server
+        state: present
+    
+    - name: ensure web service is running
+      win_service:
+        name: W3Svc
+        state: started
+
 ...
