@@ -1,0 +1,36 @@
+---
+- name: Install packages
+  hosts: win1.example.com
+
+  tasks:
+    - name: Handle package installation
+      CHANGE_ME:
+        - name: Copy package to target host
+          CHANGE_ME:
+            src: files/7z.exe
+            dest: C:\Users\student\Downloads\
+
+        - name: Install package
+          win_package:
+            path: C:\Users\student\Downloads\7z.exe
+            CHANGE_ME: 7-Zip
+            CHANGE_ME: /S
+            state: present
+
+      CHANGE_ME:
+        - debug:
+            msg: "Sorry, it didn't work out :("
+
+        - name: Attempt uninstall
+          win_package:
+            path: C:\Program Files\7-Zip\Uninstall.exe
+            product_id: 7-Zip
+            arguments: /S
+            state: absent
+          ignore_errors: yes
+
+      CHANGE_ME:
+        - name: Clean up installation package
+          CHANGE_ME:
+            CHANGE_ME: C:\Users\student\Downloads\7z.exe
+            CHANGE_ME: absent

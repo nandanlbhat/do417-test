@@ -1,0 +1,29 @@
+---
+- name: Populate hostvars
+  hosts: win*.example.com
+
+- name: SNMP configured on server
+  hosts: win2.example.com
+  tasks:
+    - name: SNMP configured using a role
+      vars:
+        CHANGE_ME
+
+      CHANGE_ME:
+        name: CHANGE_ME
+
+- name: SNMP configured on client
+  hosts: win1.example.com
+  vars:
+    CHANGE_ME
+  tasks:
+    - name: Chocolatey is installed
+      CHANGE_ME:
+        name: CHANGE_ME
+        state: present
+
+    - name: Packages are installed
+      CHANGE_ME:
+        name: "{{ CHANGE_ME }}"
+        state: present
+        pinned: true

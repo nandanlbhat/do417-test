@@ -1,0 +1,26 @@
+---
+- name: Gather facts to populate hostvars
+  hosts: Windows
+
+- name: Configure the win2 host
+  hosts: win2.example.com
+  gather_facts: no
+  vars:
+    etc_dir: 'C:\Windows\System32\drivers\etc'
+    disabled_services:
+      - ADD_ME
+      ...
+
+  tasks:
+    - name: Configure hosts file from template
+      CHANGE_ME:
+        src: templates/hosts.j2
+        dest: '{{ CHANGE_ME }}\hosts'
+
+    - name: Reduce server footprint
+      CHANGE_ME:
+        name: "{{ CHANGE_ME }}"
+        start_mode: CHANGE_ME
+        state: CHANGE_ME
+      loop: "{{ CHANGE_ME }}"
+      ignore_errors: yes

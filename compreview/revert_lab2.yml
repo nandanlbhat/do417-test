@@ -1,0 +1,28 @@
+---
+- name: Reset the win2 host services
+  hosts: win2.example.com
+  gather_facts: no
+  vars:
+    auto_services:
+      - AppHostSvc
+      - Spooler
+    manual_services:
+      - lfsvc
+      - SSDPSRV
+
+  tasks:
+    - name: Reset auto services
+      win_service:
+        name: "{{ item }}"
+        start_mode: auto
+        state: started
+      loop: "{{ auto_services }}"
+      ignore_errors: yes
+
+    - name: Reset manual services
+      win_service:
+        name: "{{ item }}"
+        start_mode: manual
+        state: started
+      loop: "{{ manual_services }}"
+      ignore_errors: yes
