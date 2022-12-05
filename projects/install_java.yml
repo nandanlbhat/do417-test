@@ -1,0 +1,12 @@
+---
+- name: Installing Java
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Using the ansible-windows-java role to install Java
+      vars:
+        jdk_package: jdk8
+        java_major_version: 8.0
+        java_minor_version: 221
+      import_role:
+        name: ansible-windows-java

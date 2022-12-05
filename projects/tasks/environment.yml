@@ -1,0 +1,6 @@
+---
+  - name: IIS and .Net 4.5 are installed
+    ANSIBLE_MODULE:
+      name: "{{ CHANGE_ME }}"
+      include_management_tools: True
+      state: present

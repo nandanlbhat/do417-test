@@ -1,0 +1,29 @@
+---
+- name: Configure web server
+  hosts: all
+  gather_facts: false
+
+  tasks:
+    - name: Include the environment task file and set the variables
+      ANSIBLE_MODULE: CHANGE_ME #include the tasks from the environment.yml file, specify the correct path to the file
+      CHANGE_ME: #set the necessary variables
+        CHANGE_ME:
+          - Web-Server
+          - Web-Asp-Net45
+
+    - name: Import the site task file and set the variables
+      ANSIBLE_MODULE: CHANGE_ME #import the tasks from the site.yml files, specify the correct path
+      CHANGE_ME: #set the necessary variables
+        iis_site_path: C:\sites\projects
+        iis_site_name: "DO417-projects"
+        iis_site_port: CHANGE_ME #specify the correct port
+
+    - name: Import the firewall task file and set the variable
+      ANSIBLE_MODULE: CHANGE_ME #import the task from the firewall.yml file, specify the correct path
+      CHANGE_ME: #set the necessary variables
+        iis_site_port: CHANGE_ME #specify the correct port
+
+- name: Import test play file and set the variable
+  ANSIBLE_MODULE: CHANGE_ME #import the play from the test.yml file, specify the correct path
+  vars:
+    url: 'http://win1.example.com:8080'

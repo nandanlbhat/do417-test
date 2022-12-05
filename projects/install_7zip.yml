@@ -1,0 +1,7 @@
+---
+- name: Installing 7zip using a local role
+  hosts: all
+  tasks:
+    - name: Install 7zip
+      import_role:
+        name: ansible-7zip

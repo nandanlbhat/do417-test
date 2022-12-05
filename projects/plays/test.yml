@@ -1,0 +1,11 @@
+---
+- name: Test web service
+  hosts: win1.example.com
+  gather_facts: false
+
+  tasks:
+
+    - name: Connect to internet web server
+      ANSIBLE_MODULE:
+        url: "{{ url }}"
+        CHANGE_ME: 200

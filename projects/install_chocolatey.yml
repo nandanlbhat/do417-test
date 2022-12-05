@@ -1,0 +1,13 @@
+---
+- name: Installing chocolatey using a role with custom settings
+  hosts: all
+  tasks:
+    - name: Install chocolatey with custom settings
+      vars:
+        CHANGE_ME: #replace with the proper role variable to customize the configuration
+          - commandExecutionTimeoutSeconds: 2300
+        CHANGE_ME: #replace with the proper role variable to change some feature settings
+          - virusCheck: true
+          - usePackageRepositoryOptimizations: true
+      import_role:
+        name: CHANGE_ME #replace with the name you have given the role in the requirements.yml file

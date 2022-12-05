@@ -1,0 +1,20 @@
+---
+- name: Roles example is cleaned up
+  hosts: all
+  tasks:
+    - name: HTML files are absent
+      win_file:
+        path: C:\Inetpub\wwwroot\{{ item }}
+        state: absent
+      loop:
+        - index.html
+        - info.html
+        - example.html
+
+    - name: Installed features are absent
+      win_feature:
+        name: "{{ item }}"
+        state: absent
+      loop:
+        - Web-Server
+        - Web-Http-Tracing
