@@ -1,8 +1,8 @@
 ---
-- name: say hi
+- name: say hello
   hosts: localhost
   tasks:
-    - name: say hi in output
+    - name: say hello in output
       debug:
-        msg: hi
+        msg: hello
 ...
