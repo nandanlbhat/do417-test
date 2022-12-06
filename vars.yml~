@@ -6,5 +6,5 @@
   tasks: 
     - name: show value of myvar variable
       debug:
-        msg: the value of topsecret variable is - {{ topsecret }}
+        msg: the value of topsecret variable is {{ topsecret }}
 ...
