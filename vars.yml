@@ -5,6 +5,8 @@
     myvar: "from play level in playbook"
   tasks: 
     - name: show value of myvar variable
+      vars:
+        myvar: "from tasks level in playbook"
       debug:
         var: myvar
 ...
