@@ -1,6 +1,6 @@
 ---
 - name: show a variable
-  hosts: localhost
+  hosts: all
   tasks: 
     - name: show value of myvar variable
       debug:
