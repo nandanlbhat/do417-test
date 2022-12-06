@@ -8,5 +8,5 @@
       vars:
         myvar: "from tasks level in playbook"
       debug:
-        msg: {{ myvar }} is the value of my variable myvar 
+        msg: "{{ myvar }} is the value of my variable myvar"
 ...
