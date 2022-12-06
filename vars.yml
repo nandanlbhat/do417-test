@@ -1,7 +1,7 @@
 ---
 - name: show a variable
   hosts: all
-  vars_file:
+  vars_files:
     - myvars.yml
   tasks: 
     - name: show value of myvar variable
