@@ -1,12 +1,10 @@
 ---
 - name: show a variable
   hosts: all
-  vars:
-    myvar: "from play level in playbook"
+  vars_file:
+    - myvars.yml
   tasks: 
     - name: show value of myvar variable
-      vars:
-        myvar: "from tasks level in playbook"
       debug:
         msg: "{{ myvar }} is the value of my variable myvar"
 ...
