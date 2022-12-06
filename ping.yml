@@ -1,25 +1,12 @@
 ---
-- name: say hello
-  hosts: localhost
+- name: ping hosts
+  hosts: all
   tasks:
-    - name: say hello in output
-      debug:
-        msg: hello
-
-- name: another play
-  hosts: win1.example.com
-  tasks:
-    - name: ensure host is on-line
+    - name: ping the hosts
       win_ping:
+      register: win_ping_output
 
-    - name: ensure web server feature is enabled
-      win_feature:
-        name: Web-Server
-        state: present
-    
-    - name: ensure web service is running
-      win_service:
-        name: W3Svc
-        state: started
-
+    - name: show content in registered variable
+      debug: 
+        var: win_ping_output
 ...
