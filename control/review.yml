@@ -26,7 +26,7 @@
         state: installed
       notify:
         - Machine is restarted
-      when: ansible_facts['fqdn'] == "win2.example.com"
+      when: ansible_facts['fqdn'] == "win2"
 
 
   handlers:
