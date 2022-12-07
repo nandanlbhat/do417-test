@@ -1,0 +1,35 @@
+---
+- name: try out handlers
+  hosts: all
+  tasks:
+    - name: install features on win1
+      win_feature:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - Web-Server
+        - Web-Security
+        - Web-Basic-Auth
+        - Web-IP-Security
+      when: ansible_facts['fqdn'] == "win1.example.com"
+
+    - name: put content in web page for hosts
+      win_copy:
+        content: "{{ ansible_facts['fqdn'] }}"
+        dest: C:\Inetpub\wwwroot\index.html
+      when: ansible_facts['fqdn'] == "win1.example.com"  
+
+
+    - name: Security updates applied
+      win_updates:
+        category_names: SecurityUpdates
+        state: installed
+      notify:
+        - Machine is restarted
+      when: ansible_facts['fqdn'] == "win2.example.com"
+
+
+  handlers:
+    - name: Machine is restarted
+      win_reboot:
+...
