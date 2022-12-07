@@ -1,0 +1,19 @@
+---
+- name: try out loops
+  hosts: localhost
+  gather_facts: false
+  vars_files:
+    - loop-list.yml
+  tasks:
+    - name: show a variable value in-line
+      debug:
+        msg: the variable has a value of {{ item }}
+      loop:
+        - first
+        - second
+
+    - name: show a variable value for pre-defined variable
+      debug:
+        msg: the variable has a value of {{ item }}
+      loop: "{{ myloop }}"
+...

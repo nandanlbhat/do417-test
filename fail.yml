@@ -1,0 +1,29 @@
+---
+- name: try out error handling
+  hosts: localhost
+  gather_facts: false
+  force_handlers: true
+
+  tasks:
+    - name: put some content in a temp file
+      copy:
+        content: hello world
+        dest: /tmp/test.txt
+      register: copy_output
+      notify: copy_handler
+
+    - name: check variable and fail if condition is met
+      fail:
+        msg: the gid is not ok
+      when: copy_output['gid'] == 1000
+      ignore_errors: true
+
+    - name: test some output on screen
+      debug:
+        msg: some output
+
+  handlers:
+    - name: copy_handler
+      debug:
+        msg: did you see the message?
+...

@@ -1,0 +1,29 @@
+---
+- handlers:
+    - name: my_copy_handler
+      debug:
+        msg: the copy operation modifed the file
+
+    - name: my_dummy_handler
+      debug:
+        msg: this is an add-on handler
+  gather_facts: false
+  tasks:
+    - name: put some content in a temp file
+      copy:
+        content: hello world
+        dest: /tmp/test.txt
+      notify: 
+        - my_dummy_handler
+        - my_copy_handler
+
+
+    - name: put some content in a temp file
+      copy:
+        content: hello world
+        dest: /tmp/test-1.txt
+      notify: my_copy_handler
+  
+  hosts: localhost
+  name: try out handlers
+...

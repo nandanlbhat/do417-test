@@ -1,0 +1,17 @@
+---
+- name: try out a when conditional
+  hosts: localhost
+  gather_facts: false
+  vars:
+    vendor: RedHat
+  tasks:
+    - name: show vendor name
+      debug:
+        msg: Vendor is open-source content creator
+      when: vendor == "RedHat"
+
+    - name: show vendor name
+      debug:
+        msg: Vendor is proprietary content creator
+      when: vendor == "Microsoft"
+...

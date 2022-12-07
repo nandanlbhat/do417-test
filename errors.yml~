@@ -1,0 +1,15 @@
+---
+- name: try out error handling
+  hosts: localhost
+  gather_facts: false
+
+  tasks:
+    - name: put some content in a temp file
+      copy:
+        src: /tmp/does-not-exist.txt
+        dest: /tmp/test.txt
+
+    - name: put some output on screen
+      debug:
+        msg: some output
+...

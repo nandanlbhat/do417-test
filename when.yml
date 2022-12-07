@@ -1,0 +1,15 @@
+---
+- name: try out a when conditional
+  hosts: localhost
+  gather_facts: false
+  vars:
+    vendor: 
+      - RedHat
+      - Canonical
+      - SUSE
+  tasks:
+    - name: show vendor name
+      debug:
+        msg: Supports Ansible
+      when: "'RedHat' in vendor"
+...
