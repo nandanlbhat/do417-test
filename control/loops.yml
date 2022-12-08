@@ -6,31 +6,25 @@
       win_feature:
         name: Web-Server
         state: present
-
-    - name: Custom logging is installed
+    
+    - name: Disk facts are gathered
+      win_disk_facts:
+    
+    - name: Debug tools are installed
       win_feature:
-        name: Web-Custom-Logging
+        name: "{{ item }}"
         state: present
-
-    - name: Log libraries are installed
-      win_feature:
-        name: Web-Log-Libraries
-        state: present
-
-    - name: Request Monitor is installed
-      win_feature:
-        name: Web-Request-Monitor
-        state: present
-
-    - name: HTTP Tracing is installed
-      win_feature:
-        name: Web-Http-Tracing
-        state: present
-
-    - name: Management Tools are installed
-      win_feature:
-        name: Web-Mgmt-Tools
-        state: present
+      loop:
+        - Web-Custom-Logging
+        - Web-Log-Libraries
+        - Web-Request-Monitor
+        - Web-Http-Tracing
+        - Web-Mgmt-Tools
+      when: size_remaining >= minimum_bytes
+      vars:
+        minimum_bytes: "{{ '10 GB' | human_to_bytes }}"
+        first_volume: "{{ ansible_facts.disks[0].partitions[0].volumes[0] }}"
+        size_remaining: "{{ first_volume.size_remaining }}"
 
     - name: Server is rebooted
       win_reboot:
