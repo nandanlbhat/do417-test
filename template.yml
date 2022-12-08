@@ -1,0 +1,9 @@
+---
+- name: try using a template
+  hosts: localhost
+  tasks:
+    - name: try using a template
+      template:
+        src: test.j2
+        dest: /tmp/test.render.txt
+...

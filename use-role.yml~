@@ -1,0 +1,13 @@
+---
+- name: use a role
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: try to run first
+      debug:
+        msg: did it run first?
+  roles:
+    - role: student.testrole
+      vars:
+        message: howdy
+...

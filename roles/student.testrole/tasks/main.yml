@@ -1,0 +1,5 @@
+---
+# tasks file for student.testrole
+- name: display message
+  debug:
+    msg: "{{ message }}"
